@@ -1,13 +1,13 @@
 ﻿using System;
-using MatrixClass;
-using ElementChangedArgs;
 
-namespace MatrixExtention
+namespace Task4._1
 {
     public class MatrixTracker<T>
     {
         private Matrix<T> _matrix;
-        private (int i, T item) lastChangedElement = (-1, default);
+        private int counter = -1;
+        private bool isUndoCalled = false;
+        private (int position , T item)[] previousValue = new (int, T)[10];
 
         public MatrixTracker(Matrix<T> matrix)
         {
@@ -17,18 +17,28 @@ namespace MatrixExtention
 
         private void OnMatrixElementChanged(object matrix, ElementChangedEventArgs<T> e)
         {
-            lastChangedElement = (e.Position, e.PreviousItem);
+            if (isUndoCalled)
+            {
+                previousValue[counter] = (default, default);
+                isUndoCalled = false;
+                counter--;
+            }
+            else
+            {
+                previousValue[++counter] = (e.Position, e.PreviousItem);
+            }
         }
 
         public void Undo()
         {
-            if(lastChangedElement.i != -1)
+            if(counter != -1)
             {
-                _matrix[lastChangedElement.i, lastChangedElement.i] = lastChangedElement.item;
+                isUndoCalled = true;
+                _matrix[previousValue[counter].position, previousValue[counter].position] = previousValue[counter].item;
             }
             else
             {
-                throw new InvalidOperationException("Matrix was never changed");
+                throw new InvalidOperationException("Matrix was never changed or all your changes were undone");
             }
         }
     }

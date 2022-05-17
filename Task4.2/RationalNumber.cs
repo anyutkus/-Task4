@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RationalFraction
+namespace Task4._2
 {
     sealed class RationalNumber : IComparable<RationalNumber>
     {
@@ -75,18 +75,20 @@ namespace RationalFraction
 
         public int CompareTo(RationalNumber n2)
         {
+            this.NullCheck();
+            n2.NullCheck();
             var commonDenominator = this.CommonDenomimator(n2);
             var num1 = this.Numerator * commonDenominator / this.Denominator;
             var num2 = n2.Numerator * commonDenominator / n2.Denominator;
             return num1.CompareTo(num2);
         }
 
-        private int CommonDenomimator(RationalNumber num2)
+        private int CommonDenomimator(RationalNumber n2)
         {
             var leastCommonMultiple = 1;
-            for (var i = 1; i <= this.Denominator * num2.Denominator; i++)
+            for (var i = 1; i <= this.Denominator * n2.Denominator; i++)
             {
-                if ((i % this.Denominator == 0) && (i % num2.Denominator == 0))
+                if ((i % this.Denominator == 0) && (i % n2.Denominator == 0))
                 {
                     leastCommonMultiple = i;
                 }
@@ -96,6 +98,8 @@ namespace RationalFraction
 
         public static RationalNumber operator +(RationalNumber n1, RationalNumber n2)
         {
+            n1.NullCheck();
+            n2.NullCheck();
             var newDenominator = n1.CommonDenomimator(n2);
             var newNumerator = (n1.Numerator * newDenominator / n1.Denominator) + (n2.Numerator * newDenominator / n2.Denominator);
             return new RationalNumber(newNumerator,newDenominator);
@@ -108,16 +112,21 @@ namespace RationalFraction
 
         public static RationalNumber operator *(RationalNumber n1, RationalNumber n2)
         {
+            n1.NullCheck();
+            n2.NullCheck();
             return new RationalNumber(n1.Numerator * n2.Numerator, n1.Denominator * n2.Denominator);
         }
 
         public static RationalNumber operator *(RationalNumber n1, int n2)
         {
+            n1.NullCheck();
             return new RationalNumber(n1.Numerator * n2, n1.Denominator);
         }
 
         public static RationalNumber operator /(RationalNumber n1, RationalNumber n2)
         {
+            n1.NullCheck();
+            n2.NullCheck();
             var newDenominator = Math.Abs(n1.Denominator * n2.Numerator);
             var newNumerator = n1.Numerator * n2.Denominator;
             if (n2.Numerator<0)
@@ -130,12 +139,21 @@ namespace RationalFraction
 
         public static explicit operator double(RationalNumber number)
         {
+            number.NullCheck();
             return (double)number.Numerator / (double)number.Denominator;
         }
 
         public static implicit operator RationalNumber(int number)
         {
             return new RationalNumber(number, 1);
+        }
+
+        private void NullCheck()
+        {
+            if (this == null)
+            {
+                throw new ArgumentNullException();
+            }
         }
     }
 }

@@ -1,16 +1,17 @@
 ﻿using System;
-using RationalFraction;
 
-namespace Main
+namespace Task4._2
 {
     class Program
     {
         static void Main()
         {
-            var num = new RationalNumber(-2, 6);
-            var num2 = new RationalNumber(7, 9);
+            RationalNumber num = new RationalNumber(-2, 6);
+            var num2 = new RationalNumber(-2, 6);
             Console.WriteLine(num.ToString());
             Console.WriteLine(num2.ToString());
+            Console.WriteLine(num.GetHashCode());
+            Console.WriteLine(num2.GetHashCode());
             var num3 = num + num2;
             Console.WriteLine(num3.ToString());
             var num4 = num - num2;

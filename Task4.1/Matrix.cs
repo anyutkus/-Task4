@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using ElementChangedArgs;
 
-namespace MatrixClass
+namespace Task4._1
 {
     public class Matrix<T>
     {
         private T[] _elements;
-        public delegate void ElementHandler(object matrix, ElementChangedEventArgs<T> e);
-        public event ElementHandler ElementChanged;
+        public event EventHandler<ElementChangedEventArgs<T>> ElementChanged;
 
         public int Size
         {
@@ -19,7 +17,7 @@ namespace MatrixClass
         {
             if (size < 0)
             {
-                throw new ArgumentException(nameof(size), "Less than 0");
+                throw new ArgumentException("Less than 0", nameof(size));
             }
             _elements = new T[size];
         }
@@ -36,6 +34,11 @@ namespace MatrixClass
             }
             set
             {
+                if ((i < 0) || (i >= Size) || (j < 0) || (j >= Size))
+                {
+                    throw new IndexOutOfRangeException("i or j is not correct");
+                }
+
                 if (i == j)
                 { 
                     var previousValue = _elements[i];

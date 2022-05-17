@@ -1,7 +1,6 @@
 ﻿using System;
-using MatrixClass;
 
-namespace MatrixExtention
+namespace Task4._1
 {
     public delegate T ElementsSum<T>(T val1, T val2);
 

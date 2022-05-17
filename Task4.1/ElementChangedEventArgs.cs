@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ElementChangedArgs
+namespace Task4._1
 {
     public class ElementChangedEventArgs<T> : EventArgs
     {
