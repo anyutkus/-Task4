@@ -39,7 +39,6 @@ namespace Task4._2
 
         public override string ToString()
         {
-            NullCheck(this);
             if(Denominator == 1)
             {
                 return Numerator.ToString();
