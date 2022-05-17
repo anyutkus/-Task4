@@ -39,6 +39,7 @@ namespace Task4._2
 
         public override string ToString()
         {
+            NullCheck(this);
             if(Denominator == 1)
             {
                 return Numerator.ToString();
@@ -58,6 +59,8 @@ namespace Task4._2
 
             var number = (RationalNumber)obj;
 
+            NullCheck(this, number);
+
             if ((this.Numerator == number.Numerator) && (this.Denominator == number.Denominator))
             {
                 return true;
@@ -75,8 +78,7 @@ namespace Task4._2
 
         public int CompareTo(RationalNumber n2)
         {
-            this.NullCheck();
-            n2.NullCheck();
+            NullCheck(this, n2);
             var commonDenominator = this.CommonDenomimator(n2);
             var num1 = this.Numerator * commonDenominator / this.Denominator;
             var num2 = n2.Numerator * commonDenominator / n2.Denominator;
@@ -98,8 +100,7 @@ namespace Task4._2
 
         public static RationalNumber operator +(RationalNumber n1, RationalNumber n2)
         {
-            n1.NullCheck();
-            n2.NullCheck();
+            NullCheck(n1, n2);
             var newDenominator = n1.CommonDenomimator(n2);
             var newNumerator = (n1.Numerator * newDenominator / n1.Denominator) + (n2.Numerator * newDenominator / n2.Denominator);
             return new RationalNumber(newNumerator,newDenominator);
@@ -112,21 +113,19 @@ namespace Task4._2
 
         public static RationalNumber operator *(RationalNumber n1, RationalNumber n2)
         {
-            n1.NullCheck();
-            n2.NullCheck();
+            NullCheck(n1, n2);
             return new RationalNumber(n1.Numerator * n2.Numerator, n1.Denominator * n2.Denominator);
         }
 
         public static RationalNumber operator *(RationalNumber n1, int n2)
         {
-            n1.NullCheck();
+            NullCheck(n1, n2);
             return new RationalNumber(n1.Numerator * n2, n1.Denominator);
         }
 
         public static RationalNumber operator /(RationalNumber n1, RationalNumber n2)
         {
-            n1.NullCheck();
-            n2.NullCheck();
+            NullCheck(n1, n2);
             var newDenominator = Math.Abs(n1.Denominator * n2.Numerator);
             var newNumerator = n1.Numerator * n2.Denominator;
             if (n2.Numerator<0)
@@ -139,7 +138,7 @@ namespace Task4._2
 
         public static explicit operator double(RationalNumber number)
         {
-            number.NullCheck();
+            NullCheck(number);
             return (double)number.Numerator / (double)number.Denominator;
         }
 
@@ -148,12 +147,18 @@ namespace Task4._2
             return new RationalNumber(number, 1);
         }
 
-        private void NullCheck()
+        private static void NullCheck(RationalNumber n1)
         {
-            if (this == null)
+            if (n1 == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Is null", nameof(RationalNumber));
             }
+        }
+
+        private static void NullCheck(RationalNumber n1, RationalNumber n2)
+        {
+            NullCheck(n1);
+            NullCheck(n2);
         }
     }
 }

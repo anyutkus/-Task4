@@ -6,7 +6,7 @@ namespace Task4._2
     {
         static void Main()
         {
-            RationalNumber num = new RationalNumber(-2, 6);
+            RationalNumber num = null; //= new RationalNumber(-2, 6);
             var num2 = new RationalNumber(-2, 6);
             Console.WriteLine(num.ToString());
             Console.WriteLine(num2.ToString());
